@@ -97,6 +97,44 @@ CyberRadar displays locally observable network connections associated with runni
 
 ---
 
+## 📸 Project Screenshots
+
+The screenshots below demonstrate CyberRadar's dashboard, Nmap-based scanning, Wireshark packet capture and analysis, and live monitoring features.
+
+### CyberRadar Dashboard
+![CyberRadar Dashboard](screenshots/dashboard.png)
+
+### Nmap Network Scanner
+![Nmap Network Scanner](screenshots/nmap-overview.png)
+
+### Nmap Scan Results
+![Nmap Scan Results](screenshots/nmap-results.png)
+
+### Wireshark Packet Capture
+![Wireshark Packet Capture](screenshots/wireshark-capture.png)
+
+### Wireshark & Scapy Packet Analysis
+![Wireshark Analysis Results](screenshots/wireshark-analysis-results.png)
+
+### Home Wi-Fi Dashboard
+![Home Wi-Fi Dashboard](screenshots/home-wifi-dashboard.png)
+
+### Home Network Discovery
+![Network Discovery](screenshots/network-discovery.png)
+
+### Discovered Network Devices
+![Network Devices](screenshots/network-devices.png)
+
+### Live Laptop Network Activity
+![Live Network Activity](screenshots/laptop-activity.png)
+
+### Live Laptop Applications
+![Live Laptop Applications](screenshots/live-applications.png)
+
+Additional screenshots are available in the [`screenshots/`](screenshots/) folder.
+
+---
+
 ## 🛠️ Technologies Used
 
 | Technology | Purpose |
@@ -115,6 +153,8 @@ CyberRadar displays locally observable network connections associated with runni
 ---
 
 ## 🏗️ System Architecture
+
+![CyberRadar System Architecture](docs/architecture.png)
 
 ```text
                     CYBERRADAR
@@ -146,28 +186,41 @@ CyberRadar displays locally observable network connections associated with runni
 
 ```text
 CyberRadar/
-|
-|-- app.py
-|-- requirements.txt
-|-- README.md
-|-- .gitignore
-|
-|-- templates/
-|   |-- index.html
-|   |-- wifi.html
-|
-|-- static/
-|   |-- style.css
-|   |-- wifi.css
-|   |-- script.js
-|   |-- wifi.js
-|   |
-|   |-- media/
-|       |-- radar.mp4
-|
-|-- scans/
-|
-|-- captures/
+├── app.py
+├── requirements.txt
+├── README.md
+├── LICENSE
+├── .gitignore
+├── templates/
+│   ├── index.html
+│   └── wifi.html
+├── static/
+│   ├── style.css
+│   ├── wifi.css
+│   ├── script.js
+│   ├── wifi.js
+│   └── media/
+│       └── radar.mp4
+├── docs/
+│   ├── architecture.png
+│   ├── testing.md
+│   └── CyberRadar_Report.pdf
+├── screenshots/
+│   ├── dashboard.png
+│   ├── home-wifi-dashboard.png
+│   ├── laptop-activity.png
+│   ├── live-applications.png
+│   ├── network-devices.png
+│   ├── network-discovery.png
+│   ├── nmap-overview.png
+│   ├── nmap-results.png
+│   ├── network-scanner.png
+│   ├── wireshark-analysis-overview.png
+│   ├── wireshark-packet-table.png
+│   ├── wireshark-analysis-results.png
+│   └── wireshark-capture.png
+├── scans/             # Local scan data (not uploaded)
+└── captures/          # Private packet captures (not uploaded)
 ```
 
 The exact project structure may vary depending on the included assets and locally generated files.
@@ -272,6 +325,16 @@ Open **Live Laptop Activity** or **Live Laptop Applications** on the Home Wi-Fi 
 
 ---
 
+## 🧪 Testing & Project Documentation
+
+- [Testing document](docs/testing.md)
+- [Project report (PDF)](docs/CyberRadar_Report.pdf)
+- [Architecture diagram](docs/architecture.png)
+
+Testing outcomes should be recorded from actual runs of the application.
+
+---
+
 ## 🔐 Security and Privacy
 
 CyberRadar is developed for educational purposes and authorized network analysis.
@@ -280,6 +343,7 @@ CyberRadar is developed for educational purposes and authorized network analysis
 - Use Wireshark only to capture traffic you are authorized to inspect.
 - Avoid uploading sensitive packet captures or private network inventories to public repositories.
 - Keep personal network data and locally generated scan results out of GitHub.
+- Review screenshots to remove personal Wi-Fi names, IP/MAC addresses, and identifying details before publishing.
 
 ---
 
@@ -313,7 +377,7 @@ CyberRadar is developed for educational purposes and authorized network analysis
 
 ## 📜 License
 
-This project may be distributed under the MIT License if an MIT `LICENSE` file is included in the repository.
+This project is licensed under the [MIT License](LICENSE). Third-party assets remain subject to their respective licenses.
 
 ---
 
