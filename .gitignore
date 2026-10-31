@@ -1,0 +1,45 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local device inventories and scan results
+scans/*
+!scans/.gitkeep
+
+# Packet captures
+captures/*
+!captures/.gitkeep
+capture/*
+!capture/.gitkeep
+pcap/*
+!pcap/.gitkeep
+*.pcap
+*.pcapng
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Editor and system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
