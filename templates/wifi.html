@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Home Wi-Fi Scan | CyberRadar</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='wifi.css') }}">
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">◎</div>
+            <div>CYBER<span>RADAR</span></div>
+        </div>
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <nav>
+            <a href="/" class="nav-link">
+                ◈ &nbsp; Dashboard
+            </a>
+
+            <a href="/#scanner" class="nav-link">
+                ⌕ &nbsp; Network Scanner
+            </a>
+
+            <a href="/#packetAnalyzer" class="nav-link">
+                ◉ &nbsp; Packet Analyzer
+            </a>
+
+            <a href="/wifi" class="nav-link active">
+                ◎ &nbsp; Home Wi-Fi Scan
+            </a>
+
+            <a href="#liveActivity" class="nav-link">
+                ↗ &nbsp; Live Laptop Activity
+            </a>
+
+            <a href="#liveApps" class="nav-link">
+                ▦ &nbsp; Live Applications
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <span class="status-dot"></span>
+            LOCAL LAB MODE
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main">
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">NETWORK DISCOVERY</p>
+                <h1>Home Wi-Fi Scan</h1>
+
+                <p class="subtitle">
+                    Discover devices and monitor your local network
+                </p>
+            </div>
+           
+            <div class="system-status">
+                <span class="status-dot"></span>
+                LOCAL NETWORK
+            </div>
+
+        </header>
+
+        <!-- WIFI INFORMATION -->
+
+        <section class="wifi-stats">
+
+            <div class="stat-card">
+                <div class="stat-icon">◉</div>
+                <p>Connected Wi-Fi</p>
+                <h2 class="wifi-value" id="wifiName">
+                    Loading...
+                </h2>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⌘</div>
+                <p>Your IP Address</p>
+                <h2 class="wifi-value" id="localIP">--</h2>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">▣</div>
+                <p>Default Gateway</p>
+                <h2 class="wifi-value" id="gateway">--</h2>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">◎</div>
+                <p>Known Network Devices</p>
+                <h2 id="deviceCount">0</h2>
+            </div>
+
+        </section>
+
+        <!-- NETWORK DISCOVERY -->
+
+        <section class="panel discovery-panel"
+                 id="deviceDiscovery">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Network Discovery</h3>
+                    <p>
+                        Discover responding devices on your home LAN
+                    </p>
+                </div>
+
+                <span class="panel-tag">DISCOVERY</span>
+            </div>
+            
+            
+<!-- ANIMATED NETWORK RADAR -->
+<div class="cyber-radar-stage" aria-hidden="true">
+
+    <div class="radar-glow"></div>
+
+    <video class="cyber-radar-video"
+           autoplay
+           muted
+           loop
+           playsinline>
+        <source
+            src="{{ url_for('static', filename='media/radar.mp4') }}"
+            type="video/mp4">
+    </video>
+
+    <div class="radar-center-label">
+        <span class="radar-status-dot"></span>
+        CYBERRADAR ACTIVE
+    </div>
+
+</div>
+
+
+            <div class="discovery-summary">
+
+                <div class="discovery-stat">
+                    <p>Known Devices</p>
+                    <h2 id="knownDevices">0</h2>
+                </div>
+
+                <div class="discovery-stat">
+                    <p>Responding</p>
+                    <h2 id="onlineDevices">0</h2>
+                </div>
+
+                <div class="discovery-stat">
+                    <p>New Devices</p>
+                    <h2 id="newDevices">0</h2>
+                </div>
+
+            </div>
+
+            <div class="discovery-network">
+                <span>Detected Wi-Fi subnet</span>
+                <strong id="networkRange">Detecting...</strong>
+            </div>
+
+            <label class="discovery-consent">
+                <input type="checkbox" id="scanAuthorized">
+                I own or have permission to scan this network.
+            </label>
+
+            <button type="button" id="discoverBtn">
+                ◎ &nbsp; Scan Home Network
+            </button>
+
+            <p class="status-text" id="discoveryStatus">
+                Ready to scan.
+            </p>
+
+            <p class="discovery-note">
+                A responding device is not necessarily a Wi-Fi
+                client. Some connected devices may not respond.
+            </p>
+
+        </section>
+
+        <!-- DEVICE LIST -->
+
+        <section class="panel device-list-panel">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Network Devices</h3>
+                    <p>
+                        Explore discovered devices and their details
+                    </p>
+                </div>
+
+                <span class="panel-tag">DEVICES</span>
+            </div>
+
+            <div class="device-toolbar">
+
+                <input
+                    type="search"
+                    id="deviceSearch"
+                    placeholder="Search device, IP, MAC, manufacturer..."
+                >
+
+                <select id="deviceFilter">
+                    <option value="all">All Devices</option>
+                    <option value="responding">Responding</option>
+                    <option value="not-seen">Not Seen This Scan</option>
+                    <option value="new">New Devices</option>
+                </select>
+
+            </div>
+
+            <div class="device-cards" id="deviceCards">
+                <p class="status-text">
+                    Loading saved devices...
+                </p>
+            </div>
+
+            <p class="status-text" id="lastDiscovery">
+                No scan completed in this session.
+            </p>
+
+        </section>
+
+        <!-- SELECTED DEVICE DETAILS -->
+
+        <section class="panel device-detail-panel"
+                 id="deviceDetailPanel"
+                 hidden>
+
+            <div class="panel-header">
+                <div>
+                    <h3 id="detailTitle">Device Details</h3>
+                    <p>Device information and custom labels</p>
+                </div>
+
+                <button type="button" id="closeDeviceDetail">
+                    ✕
+                </button>
+            </div>
+
+            <div class="device-info-grid">
+
+                <div>
+                    <span>IP Address</span>
+                    <strong id="detailIP">--</strong>
+                </div>
+
+                <div>
+                    <span>MAC Address</span>
+                    <strong id="detailMAC">--</strong>
+                </div>
+
+                <div>
+                    <span>Hostname</span>
+                    <strong id="detailHostname">--</strong>
+                </div>
+
+                <div>
+                    <span>Manufacturer</span>
+                    <strong id="detailVendor">--</strong>
+                </div>
+
+                <div>
+                    <span>First Seen</span>
+                    <strong id="detailFirstSeen">--</strong>
+                </div>
+
+                <div>
+                    <span>Last Seen</span>
+                    <strong id="detailLastSeen">--</strong>
+                </div>
+
+            </div>
+
+            <div class="device-edit-fields">
+
+                <label for="deviceCustomName">
+                    Custom Device Name
+                </label>
+
+                <input
+                    type="text"
+                    id="deviceCustomName"
+                    maxlength="60"
+                    placeholder="Example: My Android Phone"
+                >
+
+                <label for="deviceRoom">
+                    Room / Location Label
+                </label>
+
+                <input
+                    type="text"
+                    id="deviceRoom"
+                    maxlength="60"
+                    placeholder="Example: Bedroom"
+                >
+
+                <button type="button" id="saveDeviceBtn">
+                    Save Device Details
+                </button>
+
+                <p class="status-text" id="deviceSaveStatus"></p>
+
+            </div>
+
+        </section>
+
+        <!-- LIVE LAPTOP ACTIVITY -->
+
+        <section class="panel live-panel"
+                 id="liveActivity">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Live Laptop Activity</h3>
+                    <p>
+                        Network traffic updated every 2 seconds
+                    </p>
+                </div>
+
+                <span class="panel-tag">LIVE</span>
+            </div>
+
+            <div class="live-stats">
+
+                <div class="live-stat">
+                    <p>↓ Download Speed</p>
+                    <h2 id="downloadSpeed">0 KB/s</h2>
+                </div>
+
+                <div class="live-stat">
+                    <p>↑ Upload Speed</p>
+                    <h2 id="uploadSpeed">0 KB/s</h2>
+                </div>
+
+                <div class="live-stat">
+                    <p>Total Received</p>
+                    <h2 id="totalReceived">0 MB</h2>
+                </div>
+
+                <div class="live-stat">
+                    <p>Total Sent</p>
+                    <h2 id="totalSent">0 MB</h2>
+                </div>
+
+            </div>
+
+            <div class="traffic-meter">
+
+                <p>Download Activity</p>
+                <div class="meter-track">
+                    <div id="downloadBar"
+                         class="meter-fill"></div>
+                </div>
+
+                <p>Upload Activity</p>
+                <div class="meter-track">
+                    <div id="uploadBar"
+                         class="meter-fill upload-fill"></div>
+                </div>
+
+            </div>
+
+            <p class="status-text" id="liveStatus">
+                Connecting to laptop monitor...
+            </p>
+
+        </section>
+
+        <!-- LIVE LAPTOP APPLICATIONS -->
+
+        <section class="panel live-apps-panel"
+                 id="liveApps">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Live Laptop Applications</h3>
+                    <p>
+                        Processes with observable network connections
+                    </p>
+                </div>
+
+                <span class="panel-tag">LIVE</span>
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>APPLICATION</th>
+                            <th>CONNECTIONS</th>
+                            <th>REMOTE IPs</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="liveAppsTable">
+                        <tr>
+                            <td colspan="3">
+                                Checking applications...
+                            </td>
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <p class="status-text" id="liveAppsStatus">
+                Waiting for application data...
+            </p>
+
+        </section>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='wifi.js') }}"></script>
+
+</body>
+</html>

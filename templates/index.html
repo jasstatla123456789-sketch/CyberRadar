@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>CyberRadar | Network Security Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-icon">◎</div>
+            <div>CYBER<span>RADAR</span></div>
+        </div>
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <nav>
+
+            <a href="#dashboard" class="nav-link active">
+                ◈ &nbsp; Dashboard
+            </a>
+
+            <a href="#scanner" class="nav-link">
+                ⌕ &nbsp; Network Scanner
+            </a>
+
+            <a href="#packetAnalyzer" class="nav-link">
+                ◉ &nbsp; Packet Analyzer
+            </a>
+
+            <a href="#scanResults" class="nav-link">
+                ▤ &nbsp; Scan Results
+            </a>
+
+            <a href="/wifi" class="nav-link">
+                ◉ &nbsp; Home Wi-Fi Scan
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <span class="status-dot"></span>
+            LOCAL LAB MODE
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+
+    <main class="main" id="dashboard">
+
+        <header class="topbar">
+
+            <div>
+                <p class="eyebrow">CYBER SECURITY CENTER</p>
+
+                <h1>Security Overview</h1>
+
+                <p class="subtitle">
+                    Network scanning and traffic analysis dashboard
+                </p>
+            </div>
+
+            <div class="system-status">
+                <span class="status-dot"></span>
+                SYSTEM ONLINE
+            </div>
+
+        </header>
+
+        <!-- DASHBOARD STATISTICS -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+                <div class="stat-icon">▣</div>
+                <p>Devices Scanned</p>
+                <h2 id="devices">0</h2>
+                <small>Localhost scan</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⌘</div>
+                <p>Open Ports</p>
+                <h2 id="openPorts">0</h2>
+                <small>Detected by Nmap</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">◉</div>
+                <p>Packets Analyzed</p>
+                <h2 id="dashboardPackets">0</h2>
+                <small>From uploaded capture</small>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⚑</div>
+                <p>Security Alerts</p>
+                <h2 id="alerts">0</h2>
+                <small>Alerts coming soon</small>
+            </div>
+
+        </section>
+
+        <!-- NMAP SCANNER AND CHART -->
+
+        <section class="content-grid">
+
+            <div class="panel">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Network Scan Overview</h3>
+                        <p>TCP port state distribution</p>
+                    </div>
+
+                    <span class="panel-tag">NMAP</span>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="networkChart"></canvas>
+                </div>
+
+            </div>
+
+            <div class="panel scanner-panel" id="scanner">
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Network Scanner</h3>
+                        <p>Scan your local computer</p>
+                    </div>
+
+                    <span class="panel-tag">LOCAL</span>
+                </div>
+
+                
+<!-- ANIMATED RADAR VIDEO -->
+<div class="scanner-visual">
+    <video
+        class="dashboard-radar-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        aria-label="Animated network radar"
+    >
+        <source
+            src="{{ url_for('static', filename='media/radar.mp4') }}"
+            type="video/mp4"
+        >
+    </video>
+</div>
+
+
+                <div class="target-box">
+                    <span>SCAN TARGET</span>
+                    <strong>127.0.0.1</strong>
+                </div>
+
+                <button id="scanBtn" onclick="startScan()">
+                    ◎ &nbsp; Run Local Scan
+                </button>
+
+                <p class="status-text" id="scanStatus">
+                    Ready to scan.
+                </p>
+
+            </div>
+
+        </section>
+
+        <!-- NMAP RESULTS -->
+
+        <section class="panel results-panel" id="scanResults">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Nmap Port Scan Results</h3>
+                    <p>Open, closed and filtered ports</p>
+                </div>
+
+                <span class="panel-tag">RESULTS</span>
+            </div>
+
+            <div class="table-wrapper">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PORT</th>
+                            <th>PROTOCOL</th>
+                            <th>SERVICE</th>
+                            <th>STATE</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="resultsBody">
+                        <tr>
+                            <td colspan="4" class="empty">
+                                Run a scan to view results.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <p class="last-scan" id="lastScan">
+                No scans performed yet.
+            </p>
+
+        </section>
+
+        <!-- WIRESHARK PACKET ANALYZER -->
+
+        <section class="panel packet-panel" id="packetAnalyzer">
+
+            <div class="panel-header">
+                <div>
+                    <h3>Wireshark Packet Analyzer</h3>
+                    <p>
+                        Upload and analyze network packet captures
+                    </p>
+                </div>
+
+                <span class="panel-tag">WIRESHARK</span>
+            </div>
+
+            <!-- DRAG AND DROP AREA -->
+
+            <div class="upload-area" id="dropZone">
+
+                <input
+                    type="file"
+                    id="pcapFile"
+                    accept=".pcap,.pcapng"
+                    hidden
+                >
+
+                <div class="upload-icon">⇧</div>
+
+                <h3>Drop Your Capture File Here</h3>
+
+                <p>
+                    Drag and drop your PCAP or PCAPNG file
+                </p>
+
+                <span class="upload-or">OR</span>
+
+                <button
+                    type="button"
+                    class="browse-btn"
+                    id="browseBtn"
+                >
+                    Browse Files
+                </button>
+
+                <div
+                    class="selected-file"
+                    id="selectedFile"
+                    hidden
+                >
+                    <span>📄</span>
+                    <span id="fileName"></span>
+
+                    <button
+                        type="button"
+                        id="removeFile"
+                    >
+                        ✕
+                    </button>
+                </div>
+
+                <p class="file-hint">
+                    Supports .pcap and .pcapng • Max 20 MB
+                </p>
+
+                <button
+                    type="button"
+                    id="analyzeBtn"
+                    disabled
+                >
+                    Analyze Packets
+                </button>
+
+                <p class="status-text" id="analysisStatus">
+                    Waiting for capture file...
+                </p>
+
+            </div>
+
+            <!-- ANALYSIS RESULTS -->
+
+            <div id="analysisResults" hidden>
+
+                <div class="packet-stats">
+
+                    <div class="packet-stat">
+                        <p>Total Packets</p>
+                        <h2 id="packetCount">0</h2>
+                    </div>
+
+                    <div class="packet-stat">
+                        <p>TCP Packets</p>
+                        <h2 id="tcpCount">0</h2>
+                    </div>
+
+                    <div class="packet-stat">
+                        <p>UDP Packets</p>
+                        <h2 id="udpCount">0</h2>
+                    </div>
+
+                    <div class="packet-stat">
+                        <p>DNS Packets</p>
+                        <h2 id="dnsCount">0</h2>
+                    </div>
+
+                </div>
+
+                <!-- PROTOCOL CHART -->
+
+                <div class="packet-chart">
+
+                    <h3>Protocol Distribution</h3>
+
+                    <div class="chart-container">
+                        <canvas id="protocolChart"></canvas>
+                    </div>
+
+                </div>
+
+                <!-- PACKET TABLE -->
+
+                <div class="panel-header">
+                    <div>
+                        <h3>Captured Packet Details</h3>
+                        <p>First 100 packets</p>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>NO.</th>
+                                <th>SOURCE IP</th>
+                                <th>DESTINATION IP</th>
+                                <th>PROTOCOL</th>
+                                <th>LENGTH</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="packetTable"></tbody>
+                    </table>
+
+                </div>
+
+                <!-- TOP IP ADDRESSES -->
+
+                <h3 class="sources-heading">
+                    Top Source IP Addresses
+                </h3>
+
+                <div id="topSources"></div>
+
+            </div>
+
+        </section>
+
+        <footer>
+            CyberRadar © 2026 | Network Security Analysis
+        </footer>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
